@@ -1,0 +1,41 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Playlab</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <form class="navbar-form navbar-right">
+                {% if user.is_authenticated %}
+                <div class="form-group">
+                    
+                    <strong>Hello {{user.username}}! </strong>
+
+                    
+<!--
+                    <a href="{% url 'account_email' %}" class="btn btn-primary" role="button">Change E-mail</a>
+-->
+                    <a href="{% url 'account_email' %}"" class="btn btn-success" role="button"><i class="fa fa-cog img-circle text-muted"></i>User Settings</a>
+  
+                    <a href="{% url 'account_logout' %}" class="btn btn-warning" role="button"><span class="glyphicon btn-glyphicon glyphicon-log-out img-circle text-muted"></span>Log Out</a>
+                </div>
+                {% else %}
+                <div class="form-group">
+                    <a class="btn icon-btn btn-primary" href="{% url 'account_login' %}"><span class="glyphicon btn-glyphicon glyphicon-user img-circle text-muted"></span>Signin</a>
+                    <a class="btn icon-btn btn-warning" href="{% url 'account_signup' %}"><span class="glyphicon btn-glyphicon glyphicon-log-in img-circle text-muted"></span>Register</a>
+<!--
+                    <a href="{% url 'account_login' %}" class="btn btn-success" role="button">Login In</a>
+                    <a href="{% url 'account_signup' %}" class="btn btn-primary" role="button">Register</a>
+-->
+                </div>
+                {%endif%}
+            </form>
+        </div><!--/.navbar-collapse -->
+    </div>
+</div>
+    

@@ -1,0 +1,11 @@
+<center><h3 class="dark-grey">Sign Up!</h3></center>    
+<form id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      {% bootstrap_icon "play" %} Sign up
+    </button>
+  {% endbuttons %}
+</form>
+

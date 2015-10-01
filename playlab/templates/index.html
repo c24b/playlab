@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block head_title %}Welcome{% endblock %}
+
+{% block content %}
+    <div class="container">
+    {% block nav %}
+    {% include "./navbar.html" %}
+    {% endblock %}
+    </div>
+        <div class="container-fluid">
+            
+            <div class="row">     
+                <center>
+                <h1> <i class="fa fa-play-circle fa-10x">Playlab</i></h1>
+                </center>
+                
+                
+                <div class="col-xs-4 col-sm-3 col-sm-offset-3 well">
+                
+                    <center><h3>Sign In</h3></center>
+                    <br>
+                    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                    
+                    <form id="loginform" class="form-horizontal" role="form" action="/accounts/login/" method="POST">
+                    {% csrf_token %}        
+                                {% if redirect_field_value %}
+                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                                {% endif %}
+                               
+                                <div class="input-group input-group">
+                                    <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+                                    
+                                    <input id="id_username" type="text" class="form-control" placeholder="Username or email" aria-describedby="sizing-addon1">
+                                    
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                  <span class="input-group-addon" id="sizing-addon2"><i class="glyphicon glyphicon-lock"></i></span>
+                                  <input type="text" id="id_password"class="form-control" placeholder="password" aria-describedby="sizing-addon2">
+                                </div>
+                                
+                                <div class="input-group">
+                                  <div class="checkbox" style="margin-bottom: 25px">
+                                    <label>
+                                      <input id="id_remember" type="checkbox" name="remember" value="remember-me"> Remember me
+                                    </label>
+                                  </div>
+                                </div>
+                                
+                                <div class="input-group col-sm-offset-1">
+                                    
+                                
+                                
+                                {% load socialaccount %}
+                                    {% load bootstrap3 %}
+                                    {% get_providers as socialaccount_providers %}
+
+                                    {% for provider in socialaccount_providers %}
+                                    
+                                    
+                                    <a class="btn btn-social-icon btn-{{provider.id}}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+                                        <i class="fa fa-{{provider.id}}"></i>
+                                    </a>
+                                    
+                                    {% endfor %}
+                                    
+                                    <button class="btn btn-primary" type="submit">Sign in</button>
+                                </div>
+                                
+                                
+                            </form>
+                </div>
+                <div class="col-xs-4 col-sm-3 col-sm-offset-1 well">
+                
+                    <center><h3>Register</h3></center>
+                    <br>
+                    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                    <form id="loginform" class="form-horizontal" role="form" action="/accounts/signup/" method="POST">
+                    {% csrf_token %}
+                                {% if redirect_field_value %}
+                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                                {% endif %}
+                               
+                                <div class="input-group input-group">
+                                    <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user"></i></span>
+                                    
+                                    <input id="id_username" type="text" class="form-control" placeholder="Username or email" aria-describedby="sizing-addon1">
+                                    
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                  <span class="input-group-addon" id="sizing-addon2"><i class="glyphicon glyphicon-lock"></i></span>
+                                  <input type="text" id="id_password"class="form-control" placeholder="password" aria-describedby="sizing-addon2">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                  <span class="input-group-addon" id="sizing-addon2"><i class="glyphicon glyphicon-lock"></i></span>
+                                  <input type="text" id="id_password2"class="form-control" placeholder="Repeat password" aria-describedby="sizing-addon2">
+                                </div>
+                                <br>
+                                <div class="input-group pull-right">
+                                    
+                                <button class="btn btn-primary" type="submit">Register</button>
+                                </div>
+                                
+                                
+                                
+                            </form>
+                </div>
+            </div>
+        </div>
+    
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load bootstrap3 %}
+{% block bootstrap3_extra_head %}
+<script src="{% static djangular/js/django-angular.min.js %}" type="text/javascript"></script>
+<script> var my_app = angular.module('login', ['ng.django.forms']); </script>
+<script type="text/javascript">
+    angular.module('djangular', ['ng.django.forms']);
+</script>
+{% endblock %}
+{% block content %}
+<form method="post" action="." validate>
+    {% csrf_token %}
+    {{ form.as_div }}
+    <button type="submit" class="btn btn-primary">Subscribe</button>
+</form>
+{% endblock %}

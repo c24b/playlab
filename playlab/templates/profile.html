@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block head_title %} Dashboard of {{user.username}}{{{% endblock %}
+{% block content %}
+    <div class="container">
+{% block nav %}
+{% include "./navbar.html" %}
+{% endblock %}
+</div>
+<div class="container-fluid">
+            
+    <div class="row">
+            
+        welcome {{user.username}}!
+
+    </div>
+</div>
+    
+{% endblock %}
+

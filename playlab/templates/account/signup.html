@@ -1,0 +1,48 @@
+{% extends "account/base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block extra_head %}
+
+{% endblock %}
+{% block content %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+{% load fontawesome %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+
+<div class="container-fluid">
+    <section class="container">
+        <div class="container-page">
+            
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <center><h3 class="dark-grey">Sign Up!</h3></center>
+    
+                
+                <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+                <form id="signup_form" method="post" action="{% url 'account_signup' %}">
+                  {% csrf_token %}
+                  {% bootstrap_form form %}
+                  {% buttons %}
+                    <button type="submit" class="btn btn-primary">
+                      {% bootstrap_icon "play" %} Sign up
+                    </button>
+                  {% endbuttons %}
+                </form>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% load socialaccount %}
+{% load bootstrap3 %}
+{% get_providers as socialaccount_providers %}
+
+{% for provider in socialaccount_providers %}
+
+<a class="btn btn-block btn-social btn-{{provider.id}}" style="width:45%">
+    <i class="fa fa-{{provider.id}}"></i> Sign in with {{provider.name}}
+</a>
+
+{% endfor %}
+
