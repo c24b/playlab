@@ -42,6 +42,10 @@ class Profile(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     
     def __unicode__(self):
+        self.username = self.user.username
+        self.email = self.user.email
+        self.first_name = self.user.first_name
+        self.last_name = self.user.last_name
         if self.user.email:
             return "{}'s profile".format(self.user.email)
         else:

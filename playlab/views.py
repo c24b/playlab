@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from allauth.account.decorators import verified_email_required, login_required
 from .models import Profile
-
+from .forms import UserProfileForm
 
 # Create your views here.
 def home(request):
@@ -11,7 +11,6 @@ def home(request):
 
 @login_required
 def profile(request, username):
-    
     user = Profile.objects.filter(username=username)
     print user.__dict__.items()
     return render(request, 'profile.html', user)
@@ -25,8 +24,8 @@ def dashboard(request, username):
     """
 
     if request.method == 'POST': # If the form has been submitted...
-
-        form = UserProfileForm(request.POST, instance=request.user.profile) # A form bound to the POST data
+        
+        form = UserProfileForm(request.POST, instance=request.user) # A form bound to the POST data
 
         if form.is_valid(): # All validation rules pass
             form.save ()
@@ -38,6 +37,6 @@ def dashboard(request, username):
     else:
         # create unbound form with initial values generated
         # from the user's profile
-        form = UserProfileForm (instance=request.user.profile)
+        form = UserProfileForm(instance=request.user)
 
     return render ( request, 'profile.html', { 'form': form, } )
