@@ -7,6 +7,7 @@ from jsonfield import JSONField
 import re
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from allauth.account.models import EmailAddress
 
 
@@ -18,77 +19,28 @@ from fontawesome.fields import IconField
 
 class Category(models.Model):
     icon = IconField()
-    
-class Profile(models.Model):
-    ''' Unique User extended auth throught one of these methods'''
-    ROLES = (
-        ('S', 'User'),
-        ('M', 'Dev'),
-        ('L', 'Admin'),)
-    role = models.CharField(max_length=1, choices=ROLES, default='S')
-    user = models.OneToOneField(User, related_name='user')
-    
-    # user visible settings
-    stop_reminders = models.BooleanField ( default=False,
-                             help_text = 'Flag if user wants reminders not to be sent.' )
 
-    stop_all_email = models.BooleanField ( default=False,
-                             help_text = 'Flag if user wants no email to be sent.' )
-
-    # hidden settings
-    is_premium =  models.BooleanField ( default=False,
-                             help_text = 'Flag if user has the premium service.' )
-    
-    date = models.DateTimeField(auto_now_add=True)
-    
-    def __unicode__(self):
-        self.username = self.user.username
-        self.email = self.user.email
-        self.first_name = self.user.first_name
-        self.last_name = self.user.last_name
-        if self.user.email:
-            return "{}'s profile".format(self.user.email)
-        else:
-            return "{}'s profile".format(self.user.username)
-    
-    #social_account
-    #email = models.EmailField(max_length=30,blank=True)
-    
-    #~ username = models.CharField(max_length=40)
-    def get_username(self):
-        if self.user.username is not None:
-            return self.username
-        else:
-           if self.user.email is not None:
-               self.user.username = re.split("@", self.user.email)[0]
- 
-    
-    def change_role(self, role):
-        print role
-        #self.role = models.CharField(max_length=1, choices=ROLES, default='S')
-        #self.save()
-        
-    def social_account_exists(self):
-        pass
-    
-    #~ def account_verified(self):
-        #~ if self.user.is_authenticated:
-            #~ result = EmailAddress.objects.filter(email=self.email)
-            #~ if len(result):
-                #~ return result[0].verified
-        #~ return False
+class CustomUser(AbstractUser):
+    genders = (('male','M'),('female','F'))
+    age = models.PositiveIntegerField(null=True, blank=True)
+    gender = models.CharField(choices=genders, 
+                               default="F", 
+                               max_length=20, blank=True)
+    # to enforce that you require email field to be associated with
+    # every user at registration
+    REQUIRED_FIELDS = ["email"]
 
 class Project(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30, unique=True)
     desc = models.CharField(max_length=3000)
     date = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(Profile)
+    user = models.ForeignKey(CustomUser)
     
     
 class Team(models.Model):
     name = models.CharField(max_length=128)
-    members = models.ManyToManyField(Profile)
+    members = models.ManyToManyField(CustomUser)
     date = models.DateTimeField(auto_now_add=True)
 
 class Script(models.Model):
@@ -125,12 +77,12 @@ class Job(models.Model):
     nb = models.IntegerField()
     params = JSONField()
     date = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(Profile)
+    user = models.ForeignKey(CustomUser)
     status = models.BooleanField()
     
-def create_user_profile(sender, instance, created, **kwargs):
+def create_user_CustomUser(sender, instance, created, **kwargs):
     if created:
-       profile, created = Profile.objects.get_or_create(user=instance)
+       CustomUser, created = CustomUser.objects.get_or_create(user=instance)
 
 def create_project(**kwargs):
     pass
@@ -139,4 +91,4 @@ def create_job(**kwargs):
 
 def create_script(**kwargs):
     pass
-    #profile, created = Profile.objects.get_or_create(user=instance)
+    #CustomUser, created = CustomUser.objects.get_or_create(user=instance)
